@@ -24,16 +24,19 @@ object SFtw extends App {
   def ftw(dir: String)(implicit predicate: File => Boolean): Seq[String] =
     ftw(new File(dir)).map(_.getPath)
 
-  def ftw(dir: File)(implicit predicate: File => Boolean): Seq[File] = {
+  def ftw(file: File)(implicit predicate: File => Boolean): Seq[File] = {
 
-    val children = Option(dir.listFiles())
-      .getOrElse(Array[File]())
-      .toList
-      .flatMap(ftw)
+    if (!file.exists())
+      throw new FileNotFoundException("File or directory doesn't exist: " + dir)
 
-    if (predicate(dir))
-      dir :: children
-    else
-      children
+    val prefix: List[File] = if (predicate(file)) List(file) else List.empty
+
+    val children: List[File] =
+      if (file.isDirectory)
+        file.listFiles().toList.flatMap(ftw)
+      else
+        List.empty
+
+      prefix ::: children
   }
 }
