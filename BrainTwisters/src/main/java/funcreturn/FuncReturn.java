@@ -1,11 +1,8 @@
 package funcreturn;
 
-@FunctionalInterface
-interface T2R<T, R> {
-    R process(T x);
-}
+import java.util.function.Function;
 
-interface IntToInt extends T2R<Integer, Integer> {}
+interface IntToInt extends Function<Integer, Integer> {}
 
 public class FuncReturn {
 
@@ -21,7 +18,7 @@ public class FuncReturn {
     }
 
     private static int compute(int x, IntToInt i2i) {
-        return i2i.process(x);
+        return i2i.apply(x);
     }
 
     // a function returning another function.
