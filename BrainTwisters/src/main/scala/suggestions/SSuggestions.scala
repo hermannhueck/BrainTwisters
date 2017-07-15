@@ -16,7 +16,7 @@ object SSuggestions extends App {
   val maxWords = args.toList.headOption.map(_.toInt).getOrElse(MAX_WORDS).max(1)
   makeSuggestions(maxWords, INPUT, STOPWORDS) foreach println
 
-  private def makeSuggestions(maxWords: Int, input: Seq[String], stopWords: Set[String]) = {
+  private def makeSuggestions(maxWords: Int, input: Seq[String], stopWords: Set[String]): Seq[Suggestion] = {
 
     val purged = input
       .filterNot(stopWords.contains)
@@ -29,9 +29,9 @@ object SSuggestions extends App {
     suggestions(maxWords.min(purged.length), purged)
   }
 
-  private def suggestions(maxWords: Int, words: List[String]) = suggestions3(maxWords, words)
+  private def suggestions(maxWords: Int, words: List[String]): List[Suggestion] = suggestions3(maxWords, words)
 
-  private def suggestions1(maxWords: Int, words: List[String]) = {
+  private def suggestions1(maxWords: Int, words: List[String]): List[Suggestion] = {
     // here we use a mutable var   :-(
     // must be improved!! --> see 2nd solution
     var suggestions = List.empty[String]
@@ -52,15 +52,14 @@ object SSuggestions extends App {
       .map(Suggestion)
   }
 
-  private def suggestions3(maxWords: Int, words: List[String]): List[Suggestion] = {
+  private def suggestions3(maxWords: Int, words: List[String]): List[Suggestion] =
     for {
       index <- (0 until words.length - maxWords + 1).toList
       combination <- createCombinations(index until index + maxWords, words)
       suggestion = Suggestion(combination)
     } yield suggestion
-  }
 
-  private def createCombinations(range: IndexedSeq[Int], words: List[String]) =
+  private def createCombinations(range: IndexedSeq[Int], words: List[String]): List[String] =
     range
       .map { i => words(i) }
       .foldLeft(List.empty[String])((acc, word) => {
