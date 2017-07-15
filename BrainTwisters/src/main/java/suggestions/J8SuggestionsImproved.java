@@ -8,7 +8,7 @@ import static java.util.Arrays.asList;
 
 public class J8SuggestionsImproved {
 
-    private static int MAX_WORDS = 3;
+    private static int MAX_WORDS = 13;
 
     private static class Suggestion {
 
