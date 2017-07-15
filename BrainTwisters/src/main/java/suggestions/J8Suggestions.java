@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class J8Suggestions {
 
-    private static int MAX_WORDS = 10;
+    private static int MAX_WORDS = 3;
 
     private static class Suggestion {
 
