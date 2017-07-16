@@ -35,37 +35,32 @@ object SSuggestions extends App {
     // here we use a mutable var   :-(
     // must be improved!! --> see 2nd solution
     var suggestions = List.empty[String]
-    for (i <- 0 until words.length - maxWords + 1) {
-      val combinations = createCombinations(i until i + maxWords, words)
-      suggestions = suggestions ::: combinations
-    }
-
+    for (i <- 0 until words.length - maxWords + 1)
+      suggestions = suggestions ::: combinations(i until i + maxWords, words)
     suggestions.map(Suggestion)
   }
 
-  private def suggestions2(maxWords: Int, words: List[String]): List[Suggestion] = {
-    val indexes = (0 until words.length - maxWords + 1).toList
-    indexes
+  private def suggestions2(maxWords: Int, words: List[String]): List[Suggestion] =
+    (0 until words.length - maxWords + 1).toList
       .flatMap { index =>
-        createCombinations(index until index + maxWords, words)
+        combinations(index until index + maxWords, words)
       }
       .map(Suggestion)
-  }
 
   private def suggestions3(maxWords: Int, words: List[String]): List[Suggestion] =
     for {
       index <- (0 until words.length - maxWords + 1).toList
-      combination <- createCombinations(index until index + maxWords, words)
+      combination <- combinations(index until index + maxWords, words)
       suggestion = Suggestion(combination)
     } yield suggestion
 
-  private def createCombinations(range: IndexedSeq[Int], words: List[String]): List[String] =
+  private def combinations(range: IndexedSeq[Int], words: List[String]): List[String] =
     range
       .map { i => words(i) }
       .foldLeft(List.empty[String])((acc, word) => {
         acc match {
           case Nil => word :: Nil
-          case head :: tail => head + " " + word :: acc
+          case head :: tail => s"$head $word" :: acc
         }
       })
       .reverse
