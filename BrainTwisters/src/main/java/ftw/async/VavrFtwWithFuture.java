@@ -1,18 +1,18 @@
 package ftw.async;
 
-import javaslang.Function1;
-import javaslang.collection.List;
-import javaslang.concurrent.Future;
+import io.vavr.Function1;
+import io.vavr.collection.List;
+import io.vavr.concurrent.Future;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import static javaslang.API.*;
-import static javaslang.Patterns.Failure;
-import static javaslang.Patterns.Success;
+import static io.vavr.API.*;
+import static io.vavr.Patterns.$Failure;
+import static io.vavr.Patterns.$Success;
 
 @SuppressWarnings("WeakerAccess")
-public class JSlangFtwWithFuture {
+public class VavrFtwWithFuture {
 
     private static void checkDir(String dir) {
         if (!new File(dir).exists())
@@ -37,11 +37,11 @@ public class JSlangFtwWithFuture {
         Future<List<String>> future = ftw(dir, isScalaFile);
 
         future.onComplete(_try -> Match(_try).of(
-                Case(Success($()), files -> {
+                Case($Success($()), files -> {
                     files.forEach(System.out::println);
                     return files;   // some object must be returned
                 }),
-                Case(Failure($()), error -> {
+                Case($Failure($()), error -> {
                     error.printStackTrace();
                     return error;   // some object must be returned
                 })

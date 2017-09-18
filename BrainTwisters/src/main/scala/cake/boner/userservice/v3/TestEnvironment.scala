@@ -1,7 +1,5 @@
 package cake.boner.userservice.v3
 
-import org.mockito.Mockito
-
 object TestEnvironment extends
   UserServiceComponent with
   UserRepositoryComponent with

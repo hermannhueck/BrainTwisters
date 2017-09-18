@@ -16,9 +16,9 @@ object AnagramsScala_2b extends App {
   anagrams(wordsToTest).foreach(println)
 
 
-  def anagrams(words: Seq[String], isDictionarySorted: Boolean = false)(implicit dictionary: Seq[String]) =
+  private def anagrams(words: Seq[String] /*, isDictionarySorted: Boolean = false */)(implicit dictionary: Seq[String]) =
     words.filter(isAnagram(_)(dictionary))
 
-  def isAnagram(word: String)(implicit dictionary: Seq[String]) =
+  private def isAnagram(word: String)(implicit dictionary: Seq[String]) =
     !dictionary.contains(word) && dictionary.map(_.sorted.toLowerCase).contains(word.sorted.toLowerCase)
 }

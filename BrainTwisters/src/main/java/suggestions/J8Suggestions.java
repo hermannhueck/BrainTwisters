@@ -30,7 +30,7 @@ public class J8Suggestions {
 
         List<Suggestion> output = makeSuggestions(
                 Arrays.asList(INPUT).iterator(),
-                new HashSet(Arrays.asList(STOPWORDS)));
+                new HashSet<String>(Arrays.asList(STOPWORDS)));
 
         output.forEach(suggestion -> System.out.println(suggestion.toString()));
     }

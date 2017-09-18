@@ -1,12 +1,14 @@
 package cake.boner.devices
 
+import scala.language.reflectiveCalls
+
 object StructuralTyping {
 
   // =======================
   // service interfaces
   trait OnOffDevice {
-    def on: Unit
-    def off: Unit
+    def on(): Unit
+    def off(): Unit
   }
   trait SensorDevice {
     def isCoffeePresent: Boolean
@@ -15,8 +17,8 @@ object StructuralTyping {
   // =======================
   // service implementations
   class Heater extends OnOffDevice {
-    def on = println("heater.on")
-    def off = println("heater.off")
+    def on(): Unit = println("heater.on")
+    def off(): Unit = println("heater.off")
   }
   class PotSensor extends SensorDevice {
     def isCoffeePresent = true
@@ -29,14 +31,14 @@ object StructuralTyping {
     val potSensor: SensorDevice
     val heater: OnOffDevice
   }) {
-    def trigger = {
-      if (env.potSensor.isCoffeePresent) env.heater.on
-      else env.heater.off
+    def trigger(): Unit = {
+      if (env.potSensor.isCoffeePresent) env.heater.on()
+      else env.heater.off()
     }
   }
 
   class Client(env : { val warmer: Warmer }) {
-    env.warmer.trigger
+    env.warmer.trigger()
   }
 
   // =======================

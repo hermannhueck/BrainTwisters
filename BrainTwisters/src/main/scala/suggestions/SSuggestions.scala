@@ -31,6 +31,7 @@ object SSuggestions extends App {
 
   private def suggestions(maxWords: Int, words: List[String]): List[Suggestion] = suggestions3(maxWords, words)
 
+  //noinspection ScalaUnusedSymbol
   private def suggestions1(maxWords: Int, words: List[String]): List[Suggestion] = {
     // here we use a mutable var   :-(
     // must be improved!! --> see 2nd solution
@@ -40,6 +41,7 @@ object SSuggestions extends App {
     suggestions.map(Suggestion)
   }
 
+  //noinspection ScalaUnusedSymbol
   private def suggestions2(maxWords: Int, words: List[String]): List[Suggestion] =
     (0 until words.length - maxWords + 1).toList
       .flatMap { index =>
@@ -60,7 +62,7 @@ object SSuggestions extends App {
       .foldLeft(List.empty[String])((acc, word) => {
         acc match {
           case Nil => word :: Nil
-          case head :: tail => s"$head $word" :: acc
+          case head :: _ => s"$head $word" :: acc
         }
       })
       .reverse

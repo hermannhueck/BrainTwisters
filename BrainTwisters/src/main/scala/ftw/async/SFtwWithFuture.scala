@@ -14,10 +14,10 @@ object SFtwWithFuture extends App {
     if (!new File(dir).isDirectory) throw new FileNotFoundException("File exists but is not a directory: " + dir)
   }
 
-  private val alwaysTrue: File => Boolean = file => true
-  private val isFile: File => Boolean = file => file.isFile
-  private val isDirectory: File => Boolean = file => file.isDirectory
-  private val isJavaFile: File => Boolean = file => file.getAbsolutePath.endsWith(".java")
+//  private val alwaysTrue: File => Boolean = file => true
+//  private val isFile: File => Boolean = file => file.isFile
+//  private val isDirectory: File => Boolean = file => file.isDirectory
+//  private val isJavaFile: File => Boolean = file => file.getAbsolutePath.endsWith(".java")
   private val isScalaFile: File => Boolean = file => file.getAbsolutePath.endsWith(".scala")
 
   private val defaultDir = "./src/main"

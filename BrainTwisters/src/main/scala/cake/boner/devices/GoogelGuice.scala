@@ -9,22 +9,22 @@ object GoogelGuice {
   // =======================
   // service interfaces
   trait OnOffDevice {
-    def on: Unit
-    def off: Unit
+    def on(): Unit
+    def off(): Unit
   }
   trait SensorDevice {
     def isCoffeePresent: Boolean
   }
   trait IWarmer {
-    def trigger
+    def trigger()
   }
   trait Client
 
   // =======================
   // service implementations
   class Heater extends OnOffDevice {
-    def on = println("heater.on")
-    def off = println("heater.off")
+    def on(): Unit = println("heater.on")
+    def off(): Unit = println("heater.off")
   }
   class PotSensor extends SensorDevice {
     def isCoffeePresent = true
@@ -34,23 +34,23 @@ object GoogelGuice {
   val heater: OnOffDevice)
   extends IWarmer {
 
-    def trigger = {
-      if (potSensor.isCoffeePresent) heater.on
-      else heater.off
+    def trigger(): Unit = {
+      if (potSensor.isCoffeePresent) heater.on()
+      else heater.off()
     }
   }
 
   // =======================
   // client
   @Inject class MyClient (val warmer: Warmer) extends Client {
-    warmer.trigger
+    warmer.trigger()
   }
 
   // =======================
   // Guice's configuration class that is defining the
   // interface-implementation bindings
   class DependencyModule extends Module {
-    def configure(binder: Binder) = {
+    def configure(binder: Binder): Unit = {
       binder.bind(classOf[OnOffDevice]).to(classOf[Heater])
       binder.bind(classOf[SensorDevice]).to(classOf[PotSensor])
       binder.bind(classOf[IWarmer]).to(classOf[Warmer])
@@ -67,10 +67,10 @@ object GoogelGuice {
   // helper companion object
   object ServiceInjector {
     import scala.collection.JavaConverters._
-    val modules = Array[Module](new DependencyModule)
-    val jModules = asJavaIterable(modules)
+    private val modules = Array[Module](new DependencyModule)
+    private val jModules = asJavaIterable(modules)
     private val injector = Guice.createInjector(jModules)
-    def inject(obj: AnyRef) = injector.injectMembers(obj)
+    private def inject(obj: AnyRef) = injector.injectMembers(obj)
   }
 
   // =======================

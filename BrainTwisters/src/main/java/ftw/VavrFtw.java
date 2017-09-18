@@ -1,19 +1,13 @@
 package ftw;
 
-import javaslang.Function1;
-import javaslang.collection.List;
-import javaslang.control.Option;
+import io.vavr.Function1;
+import io.vavr.collection.List;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SuppressWarnings("WeakerAccess")
-public class JSlangFtw {
+public class VavrFtw {
 
     private static void checkDir(String dir) {
         if (!new File(dir).exists())
