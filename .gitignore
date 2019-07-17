@@ -38,3 +38,5 @@ src_managed/
 
 /bin/
 /.idea
+.bloop
+.metals
