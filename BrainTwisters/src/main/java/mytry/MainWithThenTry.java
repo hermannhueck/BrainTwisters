@@ -1,29 +1,32 @@
 package mytry;
 
-import mytry.mytry.Try;
+import java.util.function.Consumer;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static mytry.mytry.Try.startTry;
 
 @SuppressWarnings("Convert2MethodRef")
-public class MainWithTryMap extends MainBase {
+public class MainWithThenTry extends MainBase {
 
     public static void main(String[] args) {
 
-        out.println("=====>> " + MainWithTryMap.class.getSimpleName());
+        out.println("=====>> " + MainWithThenTry.class.getSimpleName());
 
-        new MainWithTryMap();
+        new MainWithThenTry();
 
-        out.println("<<===== " + MainWithTryMap.class.getSimpleName());
+        out.println("<<===== " + MainWithThenTry.class.getSimpleName());
     }
 
-    private MainWithTryMap() {
+    private MainWithThenTry() {
 
-        Try
-                .of("Enter 2 integer numbers to divide: ", prompt -> readInput(prompt))
-                .tryMap(input -> parse(input))
-                .tryMap(pair -> divide(pair))
-                .onComplete(quotient -> out.println("Quotient: " + quotient),
-                        throwable -> err.println("Error: " + throwable.toString()));
+        String prompt = "Enter 2 integer numbers to divide: ";
+        Consumer<Integer> handleSuccess = quotient -> out.println("Quotient: " + quotient);
+        Consumer<Throwable> handleFailure = throwable -> err.println("Error: " + throwable.toString());
+
+        startTry(prompt, p -> readInput(p))
+                .thenTry(input -> parse(input))
+                .thenTry(pair -> divide(pair))
+                .onComplete(handleSuccess, handleFailure);
     }
 }

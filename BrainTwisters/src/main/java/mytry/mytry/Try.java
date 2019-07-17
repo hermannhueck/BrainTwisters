@@ -1,5 +1,6 @@
 package mytry.mytry;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -10,17 +11,29 @@ public abstract class Try<T> {
     public static <T> Try<T> of(Supplier<T> supplier) {
         try {
             return success(supplier.get());
-        } catch (Throwable t) {
-            return failure(t);
+        } catch (Throwable throwable) {
+            return failure(throwable);
         }
     }
 
-    public static <T, U> Try<U> of(final T t, Function<T, U> function) {
-        try {
-            return success(function.apply(t));
-        } catch (Throwable t2) {
-            return failure(t2);
-        }
+    public static <T> Try<T> startTry(Supplier<T> supplier) {
+        return of(supplier);
+    }
+
+    public static <T, U> Try<U> of(T t, Function<T, U> function) {
+        return of(() -> function.apply(t));
+    }
+
+    public static <T, U> Try<U> startTry(T t, Function<T, U> function) {
+        return of(t, function);
+    }
+
+    public static <T, U, R> Try<R> of(T t, U u, BiFunction<T, U, R> biFunction) {
+        return of(() -> biFunction.apply(t, u));
+    }
+
+    public static <T, U, R> Try<R> startTry(T t, U u, BiFunction<T, U, R> biFunction) {
+        return of(t, u, biFunction);
     }
 
     public static <T> Success<T> success(T value) {
@@ -74,6 +87,10 @@ public abstract class Try<T> {
 
     public <U> Try<U> tryMap(Function<T, U> mapper) {
         return flatMap((T t) -> Try.of(t, mapper));
+    }
+
+    public <U> Try<U> thenTry(Function<T, U> mapper) {
+        return tryMap(mapper);
     }
 
     public Try<T> onSuccess(Consumer<? super T> action) {
